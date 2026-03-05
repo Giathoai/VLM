@@ -1,0 +1,4 @@
+myenv/
+data/
+weights/seemore_vlm_best0.pth
+weights/seemore_vlm_best.pth
