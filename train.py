@@ -25,10 +25,9 @@ def download_hf_parquet(data_dir):
 
 def main():
     DATA_DIR = "data"
-    BATCH_SIZE = 1
+    BATCH_SIZE = 16
     IMAGE_SIZE = 224
     EPOCHS = 10  
-    VISION_DIM = 32
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Sử dụng thiết bị: {device}")
@@ -43,10 +42,10 @@ def main():
         tokenizer=tokenizer,
         batch_size=BATCH_SIZE,
         image_size=IMAGE_SIZE,
-        num_worker=0
+        num_worker=8
     )
 
-    vision_encoder = VIT(embedding_dim=VISION_DIM, num_classes=6, num_layers=6)
+    vision_encoder = VIT(embedding_dim=512, num_classes=6, num_layers=6)
     vlm_model = SeeMoreVLM(vision_encoder=vision_encoder).to(device)
 
     optimizer = torch.optim.AdamW(params=vlm_model.parameters(), lr=1e-4)

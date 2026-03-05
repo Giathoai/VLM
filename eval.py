@@ -1,3 +1,4 @@
+import os
 import torch
 import torch.nn.functional as F
 from transformers import AutoTokenizer
@@ -38,7 +39,9 @@ def main():
     tokenizer = AutoTokenizer.from_pretrained("gpt2")
     tokenizer.pad_token = tokenizer.eos_token
 
-    vision_encoder = VIT(embedding_dim=256, num_classes=1, num_layers=6)    
+    VISION_DIM = 32
+
+    vision_encoder = VIT(embedding_dim=512, num_classes=1, num_layers=6)
     model = SeeMoreVLM(vision_encoder=vision_encoder)
     
     model.load_state_dict(torch.load("weights/seemore_vlm_best.pth", map_location=device))
@@ -48,7 +51,10 @@ def main():
     dataset = load_dataset("parquet", data_files="data/train.parquet", split="train")
     transform = get_transform(image_size=224, is_train=False)
 
-    print("\n" + "="*50)
+    OUT_DIR = "eval_outputs"
+    os.makedirs(OUT_DIR, exist_ok=True)
+    print(f"\n[INFO] Ảnh đánh giá sẽ được lưu tại thư mục: {OUT_DIR}")
+    print("="*50)
     
     for i in range(min(10, len(dataset))):
         item = dataset[i]
@@ -59,6 +65,9 @@ def main():
         else:
             image = img_data.convert('RGB')
             
+        img_path = os.path.join(OUT_DIR, f"sample_{i+1}.jpg")
+        image.save(img_path)
+            
         image_tensor = transform(image).unsqueeze(0)
         
         instruction = item.get('instruction', '').strip()
@@ -68,6 +77,7 @@ def main():
         output_text = generate_text(model, image_tensor, prompt, tokenizer, device)
         
         print(f"--- MẪU THỬ {i+1} ---")
+        print(f"Đã lưu ảnh tại: {img_path}")
         print(f"Câu hỏi:\n{prompt}")
         print(f"Mô hình đáp:\n{output_text}")
         print("="*50)

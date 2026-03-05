@@ -19,7 +19,7 @@ class SeeMoreVLM(nn.Module):
         super().__init__()
         self.vision_encoder = vision_encoder 
         self.language_model = GPT2LMHeadModel.from_pretrained("gpt2")
-        self.projector = VisionLanguageProjector(256, self.language_model.config.hidden_size)
+        self.projector = VisionLanguageProjector(512, self.language_model.config.hidden_size)
         
     def forward(self, images, input_ids):
         image_features = self.vision_encoder.get_features(images) 
