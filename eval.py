@@ -38,7 +38,7 @@ def main():
     tokenizer = AutoTokenizer.from_pretrained("gpt2")
     tokenizer.pad_token = tokenizer.eos_token
 
-    vision_encoder = VIT(embedding_dim=256, num_classes=1, num_layers=2)    
+    vision_encoder = VIT(embedding_dim=256, num_classes=1, num_layers=6)    
     model = SeeMoreVLM(vision_encoder=vision_encoder)
     
     model.load_state_dict(torch.load("weights/seemore_vlm_best.pth", map_location=device))
