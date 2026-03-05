@@ -25,7 +25,7 @@ def download_hf_parquet(data_dir):
 
 def main():
     DATA_DIR = "data"
-    BATCH_SIZE = 16
+    BATCH_SIZE = 8
     IMAGE_SIZE = 224
     EPOCHS = 10  
     
@@ -42,7 +42,7 @@ def main():
         tokenizer=tokenizer,
         batch_size=BATCH_SIZE,
         image_size=IMAGE_SIZE,
-        num_worker=8
+        num_worker=6
     )
 
     vision_encoder = VIT(embedding_dim=512, num_classes=6, num_layers=6)
