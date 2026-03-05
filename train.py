@@ -47,7 +47,7 @@ def main():
     )
 
     vision_encoder = VIT(embedding_dim=VISION_DIM, num_classes=6, num_layers=6)
-    vlm_model = SeeMoreVLM(vision_encoder=vision_encoder, vision_dim=VISION_DIM).to(device)
+    vlm_model = SeeMoreVLM(vision_encoder=vision_encoder).to(device)
 
     optimizer = torch.optim.AdamW(params=vlm_model.parameters(), lr=1e-4)
     loss_fn = torch.nn.CrossEntropyLoss(ignore_index=-100)
