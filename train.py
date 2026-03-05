@@ -10,7 +10,7 @@ def main():
     DATA_DIR = "data"
     BATCH_SIZE = 4
     IMAGE_SIZE = 224
-    EPOCHS = 10  
+    EPOCHS = 2  
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Sử dụng thiết bị: {device}")
@@ -26,7 +26,7 @@ def main():
         num_worker=4
     )
 
-    vision_encoder = VIT(embedding_dim=32, num_classes=1, num_layers=2)
+    vision_encoder = VIT(embedding_dim=256, num_classes=1, num_layers=2)
     vlm_model = SeeMoreVLM(vision_encoder=vision_encoder).to(device)
 
     optimizer = torch.optim.AdamW(params=vlm_model.parameters(), lr=1e-4)
